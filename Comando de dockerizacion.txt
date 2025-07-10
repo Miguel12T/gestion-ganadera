@@ -1,4 +1,0 @@
-laravel : docker run --rm -v "${PWD}:/app" composer create-project laravel/laravel .
-vue : docker run -it --rm -v ${PWD}:/app -w /app node:18 bash
-levantar los servicios: docker-compose up --build
-
