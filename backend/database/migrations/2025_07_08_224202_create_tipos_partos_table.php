@@ -12,9 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipos_partos', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre')->unique();
-            $table->timestamps();
+            $table->id()
+                  ->comment('Identificador del registro');
+            $table->string('nombre')
+                  ->unique()
+                  ->comment('Tipos de partos');
+            $table->timestamps()
+                  ->comment('Fecha de cracion del registro');
+            $table->comment('Guarda los tipos de partos de las reses');
         });
     }
 

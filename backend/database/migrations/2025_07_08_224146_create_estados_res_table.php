@@ -12,9 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('estados_res', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre')->unique();
-            $table->timestamps();
+            $table->id()
+                  ->comment('Identificador del registro');
+            $table->string('nombre')
+                  ->unique()
+                  ->comment('Estado de la res');
+            $table->timestamps()
+                  ->comment('Fecha de cracion del registro');
+            $table->comment('Guarda los estados de las reses');
         });
     }
 

@@ -12,10 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('razas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre')->unique();
-            $table->text('descripcion')->nullable();
-            $table->timestamps();
+            $table->id()
+                  ->comment('Identificador del registro');
+            $table->string('nombre')
+                  ->unique()
+                  ->comment('Nombre del de la raza');
+            $table->text('descripcion')
+                  ->nullable()
+                  ->comment('Descripcion del la raza');
+            $table->timestamps()
+                  ->comment('Fecha de cracion del registro');
+            $table->comment('Guarda los tipos de razas de las reses');
         });
     }
 
