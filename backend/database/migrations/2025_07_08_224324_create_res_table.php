@@ -11,6 +11,34 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('res_parentales', function (Blueprint $table) {
+            $table->uuid('id')
+                  ->primary()
+                  ->comment('(PK) Identificador del registro parental');
+            $table->uuid('madre_id')
+                  ->nullable()
+                  ->comment('(FK) Identificador de la madre');
+            $table->uuid('padre_id')
+                  ->nullable()
+                  ->comment('(FK) Identificador del padre');
+            $table->string('metodo_reproduccion')
+                  ->nullable()
+                  ->comment('Metodo usado: natural, inseminación, etc.');
+            $table->string('finca_origen')
+                  ->nullable()
+                  ->comment('Nombre o código de la finca donde nació');
+            $table->timestamps()
+                  ->comment('Fecha de cracion del registro');
+            $table->foreign('madre_id', 'res_par_madre_id')
+                  ->references('id')
+                  ->on('res')
+                  ->nullOnDelete();
+            $table->foreign('padre_id', 'res_par_padre_id')
+                  ->references('id')
+                  ->on('res')
+                  ->nullOnDelete();
+        });
+
         Schema::create('res', function (Blueprint $table) {
             $table->uuid('id')
                   ->primary()
@@ -32,12 +60,9 @@ return new class extends Migration
                   ->comment('(FK) Identificador del tipo de res');
             $table->unsignedBigInteger('estado_id')
                   ->comment('(FK) Identificador del estado de la res');
-            $table->uuid('madre_id')
+            $table->uuid('res_parental_id')
                   ->nullable()
-                  ->comment('(FK) Identificador de la madre');
-            $table->uuid('padre_id')
-                  ->nullable()
-                  ->comment('(FK) Identificador del padre');
+                  ->comment('(FK) Identificador de los padres');
             $table->string('imagen')
                   ->nullable()
                   ->comment('Identificador de la foto para la res');
@@ -53,6 +78,9 @@ return new class extends Migration
               table     : 'razas',
               indexName : 'res_raza_id'
             );
+            $table->foreign('res_parental_id', 'res_par_res_parental_id')
+                  ->references('id')
+                  ->on('res_parentales');
             $table->foreignId('tipo_id')->constrained(
               table     : 'tipos_res',
               indexName : 'tip_res_tipo_id'
@@ -60,14 +88,6 @@ return new class extends Migration
             $table->foreignId('estado_id')->constrained(
               table     : 'estados_res',
               indexName : 'est_res_estado_id'
-            );
-            $table->foreignId('madre_id')->constrained(
-              table     : 'res',
-              indexName : 'res_madre_id'
-            );
-            $table->foreignId('padre_id')->constrained(
-              table     : 'res',
-              indexName : 'res_padre_id'
             );
             $table->foreignId('created_by')->constrained(
               table     : 'users',
@@ -77,10 +97,9 @@ return new class extends Migration
               table     : 'users',
               indexName : 'use_updated_by'
             );
-            $table->comment('Guarda los registros de las reses');
+            $table->comment('Tabla que almacena la informacion de las reses');
         });
     }
-
     /**
      * Reverse the migrations.
      */
