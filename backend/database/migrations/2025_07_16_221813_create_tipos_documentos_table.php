@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipos_res', function (Blueprint $table) {
-            $table->id()
-                  ->comment('Identificador del registro');
-            $table->string('nombre')
+        Schema::create('tipos_documentos', function (Blueprint $table) {
+            $table->string('tipo_documento_id')
+                  ->primary()
+                  ->comment('(PK) Tipo de documento');
+            $table->string('nombre_documento')
                   ->unique()
-                  ->comment('Nombre del tipo de res');
+                  ->comment('Nombre del tipo de documento');
             $table->timestamps()
                   ->comment('Fecha de cracion del registro');
-            $table->comment('Guarda los tipos de reses');
-            $table->comment('Tabla que almacena los tipos de reses');
+            $table->comment('Tabla que almacena los roles del sistema');
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipos_res');
+        Schema::dropIfExists('tipos_documentos');
     }
 };

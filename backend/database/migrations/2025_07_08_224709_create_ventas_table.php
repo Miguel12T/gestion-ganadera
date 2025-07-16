@@ -17,9 +17,13 @@ return new class extends Migration
             $table->date('fecha_venta');
             $table->string('comprador');
             $table->decimal('precio', 12, 2);
-            $table->text('observaciones')->nullable();
+            $table->text('observaciones')
+                  ->nullable();
             $table->timestamps();
-            $table->foreign('res_id')->references('id')->on('res');
+            $table->foreign('res_id', 'ven_res_id')
+                  ->references('id')
+                  ->on('res');
+            $table->comment('Tabla que almacena la informacion de las ventas');
         });
     }
 

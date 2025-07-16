@@ -19,7 +19,7 @@ return new class extends Migration
                   ->comment('Tipos de partos');
             $table->timestamps()
                   ->comment('Fecha de cracion del registro');
-            $table->comment('Guarda los tipos de partos de las reses');
+            $table->comment('Tabla que almacena los tipos de partos de las reses');
         });
     }
 

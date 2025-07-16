@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipos_res', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id()
-                  ->comment('Identificador del registro');
+                  ->comment('(PK) Identificador único del rol');
             $table->string('nombre')
                   ->unique()
-                  ->comment('Nombre del tipo de res');
+                  ->comment('Nombre del rol (admin, veterinario, etc.)');
+            $table->text('descripcion')
+                  ->nullable()
+                  ->comment('Descripción del rol');
             $table->timestamps()
                   ->comment('Fecha de cracion del registro');
-            $table->comment('Guarda los tipos de reses');
-            $table->comment('Tabla que almacena los tipos de reses');
+            $table->comment('Tabla que almacena los roles del sistema');
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipos_res');
+        Schema::dropIfExists('roles');
     }
 };

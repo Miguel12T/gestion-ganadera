@@ -19,7 +19,7 @@ return new class extends Migration
                   ->comment('Estado de la res');
             $table->timestamps()
                   ->comment('Fecha de cracion del registro');
-            $table->comment('Guarda los estados de las reses');
+            $table->comment('Tabla que almacena los estados de las reses');
         });
     }
 

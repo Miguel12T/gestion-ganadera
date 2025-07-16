@@ -37,6 +37,7 @@ return new class extends Migration
                   ->references('id')
                   ->on('res')
                   ->nullOnDelete();
+            $table->comment('Tabla que almacena la informacion de los padres de las reses');
         });
 
         Schema::create('res', function (Blueprint $table) {
@@ -74,29 +75,24 @@ return new class extends Migration
                   ->comment('(FK) Identificador del usuario que actualizo el registro');
             $table->timestamps()
                   ->comment('Fecha de cracion del registro');
-            $table->foreignId('raza_id')->constrained(
-              table     : 'razas',
-              indexName : 'res_raza_id'
-            );
-            $table->foreign('res_parental_id', 'res_par_res_parental_id')
+            $table->foreign('raza_id', 'res_raza_id')
+                  ->references('id')
+                  ->on('razas');
+            $table->foreign('res_parental_id', 'res_res_parental_id')
                   ->references('id')
                   ->on('res_parentales');
-            $table->foreignId('tipo_id')->constrained(
-              table     : 'tipos_res',
-              indexName : 'tip_res_tipo_id'
-            );
-            $table->foreignId('estado_id')->constrained(
-              table     : 'estados_res',
-              indexName : 'est_res_estado_id'
-            );
-            $table->foreignId('created_by')->constrained(
-              table     : 'users',
-              indexName : 'use_created_by'
-            );
-            $table->foreignId('updated_by')->constrained(
-              table     : 'users',
-              indexName : 'use_updated_by'
-            );
+            $table->foreign('tipo_id', 'res_tipo_id')
+                  ->references('id')
+                  ->on('tipos_res');
+            $table->foreign('estado_id', 'res_estado_id')
+                  ->references('id')
+                  ->on('estados_res');
+            $table->foreign('created_by', 'res_created_by')
+                  ->references('id')
+                  ->on('users');
+            $table->foreign('updated_by', 'res_updated_by')
+                  ->references('id')
+                  ->on('users');
             $table->comment('Tabla que almacena la informacion de las reses');
         });
     }

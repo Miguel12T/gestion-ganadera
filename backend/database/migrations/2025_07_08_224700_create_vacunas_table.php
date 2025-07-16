@@ -19,8 +19,13 @@ return new class extends Migration
             $table->string('dosis');
             $table->string('veterinario');
             $table->timestamps();
-            $table->foreign('res_id')->references('id')->on('res');
-            $table->foreign('tipo_vacuna_id')->references('id')->on('tipos_vacunas');
+            $table->foreign('res_id', 'vac_res_id')
+                  ->references('id')
+                  ->on('res');
+            $table->foreign('tipo_vacuna_id', 'vac_tipo_vacuna_id')
+                  ->references('id')
+                  ->on('tipos_vacunas');
+            $table->comment('Tabla que almacena la informacion de las vacunas de las reses');
         });
     }
 

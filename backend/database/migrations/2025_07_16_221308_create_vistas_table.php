@@ -11,18 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('razas', function (Blueprint $table) {
+        Schema::create('vistas', function (Blueprint $table) {
             $table->id()
-                  ->comment('Identificador del registro');
-            $table->string('nombre')
+                  ->comment('(PK) Identificador de la vista');
+            $table->string('codigo')
                   ->unique()
-                  ->comment('Nombre del de la raza');
+                  ->comment('Codigo o nombre del componente');
+            $table->string('nombre_vista')
+                  ->unique()
+                  ->comment('Nombre de la vista');
             $table->text('descripcion')
                   ->nullable()
-                  ->comment('Descripcion del la raza');
+                  ->comment('Descripción de la vista');
             $table->timestamps()
                   ->comment('Fecha de cracion del registro');
-            $table->comment('Tabla que almacena los tipos de razas de las reses');
+            $table->comment('Tabla que almacena las vistas del sistema a las que pueden acceder los roles');
         });
     }
 
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('razas');
+        Schema::dropIfExists('vistas');
     }
 };

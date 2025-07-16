@@ -18,8 +18,13 @@ return new class extends Migration
             $table->decimal('cantidad_litros', 6, 2);
             $table->unsignedBigInteger('mayordomo_id');
             $table->timestamps();
-            $table->foreign('res_id')->references('id')->on('res');
-            $table->foreign('mayordomo_id')->references('id')->on('users');
+            $table->foreign('res_id', 'bot_res_id')
+                  ->references('id')
+                  ->on('res');
+            $table->foreign('mayordomo_id', 'bot_mayordomo_id')
+                  ->references('id')
+                  ->on('users');
+            $table->comment('Tabla que almacena la informacion de las botellas de leche de las reses');
         });
     }
 
