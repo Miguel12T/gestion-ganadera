@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('partos', function (Blueprint $table) {
             $table->id();
             $table->uuid('res_id');
-            $table->unsignedBigInteger('tipo_parto_id');
             $table->date('fecha_parto');
-            $table->integer('cantidad_crias')
-                  ->default(1);
+            $table->time('hora_parto')
+                  ->nullable();
+            $table->unsignedBigInteger('tipo_parto_id');
             $table->text('observaciones')
                   ->nullable();
             $table->unsignedBigInteger('created_by')
@@ -28,6 +28,9 @@ return new class extends Migration
             $table->foreign('res_id', 'par_res_id')
                   ->references('id')
                   ->on('res');
+            $table->foreign('tipo_parto_id', 'par_tipo_parto_id')
+                  ->references('id')
+                  ->on('tipos_partos');
             $table->foreign('created_by', 'par_created_by')
                   ->references('id')
                   ->on('users');

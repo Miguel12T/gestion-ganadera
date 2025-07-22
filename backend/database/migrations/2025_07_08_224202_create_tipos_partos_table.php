@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tipos_partos', function (Blueprint $table) {
             $table->id()
                   ->comment('Identificador del registro');
-            $table->string('nombre')
+            $table->string('tipo_parto')
                   ->unique()
                   ->comment('Tipos de partos');
             $table->timestamps()
