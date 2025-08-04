@@ -17,11 +17,10 @@ return new class extends Migration
             $table->unsignedBigInteger('tipo_documento_id')
                   ->comment('(FK) Tipo de documento');
             $table->string('numero_documento')
-                  ->unique()
                   ->comment('Número de documento');
             $table->string('nombre')
                   ->comment('Nombre completo de la persona');
-            $table->string('telefono')
+            $table->string('telefono', 20)
                   ->nullable()
                   ->comment('Número de teléfono');
             $table->string('email')
@@ -30,11 +29,22 @@ return new class extends Migration
             $table->string('imagen')
                   ->nullable()
                   ->comment('Foto o avatar de la persona');
-            $table->timestamps()
-                  ->comment('Fecha de cracion del registro');
+            $table->tinyInteger('estado')
+                  ->default(1)
+                  ->comment('Estado del registro (1) Activo, (0) Inactivo');
+            $table->unsignedBigInteger('usuario_creacion')
+                  ->comment('(FK) Usuario que creo el registro');
+            $table->timestamps();
             $table->foreign('tipo_documento_id', 'per_tipo_documento_id')
                   ->references('id')
-                  ->on('tipos_documentos');
+                  ->on('tipos_documentos')
+                  ->onDelete('restrict');
+            $table->foreign('usuario_creacion', 'fk_per_usuario_creacion')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('restrict');
+            // Clave única compuesta para tipo + número de documento
+              $table->unique(['tipo_documento_id', 'numero_documento'], 'uk_persona_documento');
             $table->comment('Tabla que almacena la información general de las personas');
         });
     }

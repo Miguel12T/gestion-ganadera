@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vistas', function (Blueprint $table) {
             $table->id()
                   ->comment('(PK) Identificador de la vista');
-            $table->string('codigo')
+            $table->string('codigo', 50)
                   ->unique()
                   ->comment('Codigo o nombre del componente');
             $table->string('nombre_vista')
@@ -23,8 +23,16 @@ return new class extends Migration
             $table->text('descripcion')
                   ->nullable()
                   ->comment('Descripción de la vista');
-            $table->timestamps()
-                  ->comment('Fecha de cracion del registro');
+            $table->tinyInteger('estado')
+                  ->default(1)
+                  ->comment('Estado del registro (1) Activo, (0) Inactivo');
+            $table->unsignedBigInteger('usuario_creacion')
+                  ->comment('(FK) Usuario que creo el registro');
+            $table->timestamps();
+            $table->foreign('usuario_creacion', 'fk_vis_usuario_creacion')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('restrict');
             $table->comment('Tabla que almacena las vistas del sistema a las que pueden acceder los roles');
         });
     }

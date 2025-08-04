@@ -20,8 +20,16 @@ return new class extends Migration
             $table->text('descripcion')
                   ->nullable()
                   ->comment('Descripción del rol');
-            $table->timestamps()
-                  ->comment('Fecha de cracion del registro');
+            $table->tinyInteger('estado')
+                  ->default(1)
+                  ->comment('Estado del registro (1) Activo (0) Inactivo');
+            $table->unsignedBigInteger('usuario_creacion')
+                  ->comment('(FK) Usuario que creo el registro');
+            $table->timestamps();
+            $table->foreign('usuario_creacion', 'fk_rol_usuario_creacion')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('restrict');
             $table->comment('Tabla que almacena los roles del sistema');
         });
     }

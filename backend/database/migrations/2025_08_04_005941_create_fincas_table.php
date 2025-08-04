@@ -20,23 +20,24 @@ return new class extends Migration
                   ->unique()
                   ->comment('Código interno de identificación');
             $table->string('direccion')
-                  ->nullable()
                   ->comment('Dirección física o referencia');
-            $table->string('municipio')
-                  ->nullable()
-                  ->comment('Ubicación geográfica');
+            $table->string('pais')
+                  ->comment('Pais donde se encuentra la finca');
             $table->string('departamento')
-                  ->nullable()
                   ->comment('Departamento o región');
+            $table->string('municipio')
+                  ->comment('Ubicación geográfica');
             $table->decimal('hectareas', 8, 2)
                   ->nullable()
                   ->comment('Área total en hectáreas');
-            $table->string('propietario')
-                  ->nullable()
-                  ->comment('Nombre del dueño o empresa');
+            $table->unsignedBigInteger('propietario_id')
+                  ->comment('(FK) Nombre del dueño o empresa');
             $table->text('descripcion')
                   ->nullable()
                   ->comment('Notas o características de la finca');
+           $table->tinyInteger('estado')
+                  ->default(1)
+                  ->comment('Estado de la finca (1) Activa, (0) Inactiva');
             $table->unsignedBigInteger('created_by')
                   ->nullable()
                   ->comment('FK Usuario que registró');
@@ -44,14 +45,18 @@ return new class extends Migration
                   ->nullable()
                   ->comment('FK Último editor');
             $table->timestamps();
+            $table->foreign('propietario_id', 'fk_fin_propietario_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('restrict');
             $table->foreign('created_by')
                   ->references('id')
                   ->on('users')
-                  ->nullOnDelete();
+                  ->onDelete('restrict');
             $table->foreign('updated_by')
                   ->references('id')
                   ->on('users')
-                  ->nullOnDelete();
+                  ->onDelete('restrict');
             $table->comment('Tabla que almacena información de las fincas ganaderas registradas');
         });
     }

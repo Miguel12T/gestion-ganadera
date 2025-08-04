@@ -16,20 +16,20 @@ return new class extends Migration
                 ->nullable()
                 ->after('id')
                 ->constrained('personas')
-                ->name('use_persona_id')
-                ->onDelete('cascade')
+                ->name('fk_use_persona_id')
+                ->onDelete('restrict')
                 ->comment('(FK) Persona asignada al usuario');
           $table->foreignId('rol_id')
                 ->nullable()
                 ->after('persona_id')
                 ->constrained('roles')
-                ->name('use_rol_id')
+                ->name('fk_use_rol_id')
                 ->nullOnDelete()
                 ->comment('(FK) Rol asignado al usuario');
-          $table->enum('estado', ['activo', 'inactivo', 'suspendido'])
-                ->default('activo')
+          $table->tinyInteger('estado')
+                ->default(1)
                 ->after('rol_id')
-                ->comment('Estado del usuario');
+                ->comment('Estado del usuario (1) Activo, (0) Inactivo');
           $table->unsignedBigInteger('created_by')
                 ->nullable()
                 ->after('remember_token')
@@ -39,10 +39,13 @@ return new class extends Migration
                 ->comment('(FK) Usuario que actualizó este registro');
           $table->foreign('created_by')
                 ->references('id')->on('users')
-                ->nullOnDelete();
+                ->onDelete('restrict');
           $table->foreign('updated_by')
                 ->references('id')->on('users')
-                ->nullOnDelete();
+                ->onDelete('restrict');
+          // Índices opcionales
+          $table->index('created_by');
+          $table->index('updated_by');
       });
     }
 
