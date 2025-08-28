@@ -46,7 +46,7 @@ return new class extends Migration
           // Índices opcionales
           $table->index('created_by');
           $table->index('updated_by');
-      });
+        });
     }
 
     /**
