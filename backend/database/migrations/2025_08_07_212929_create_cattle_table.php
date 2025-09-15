@@ -11,20 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('substance_types', function (Blueprint $table) {
+        Schema::create('cattle', function (Blueprint $table) {
             $table->id()
-                  ->comment('(PK) Substance identifier');
-            $table->string('name')
+                  ->comment('(PK) Unique identifier of the cattle');
+            $table->string('code')
                   ->unique()
-                  ->comment('Substance name');
-            $table->text('description')
                   ->nullable()
-                  ->comment('Substance description');
-            $table->unsignedBigInteger('product_type_id')
-                  ->comment('(FK) Product type');
-            $table->unsignedBigInteger('administration_route_id')
+                  ->comment('Unique identification code of the cattle');
+            $table->string('name')
                   ->nullable()
-                  ->comment('(FK) Administration route');
+                  ->comment('Cattle name');
+            $table->date('birth_date')
+                  ->nullable()
+                  ->comment('Cattle birth date');
+            $table->unsignedBigInteger('breed_id')
+                  ->comment('(FK) Breed identifier');
+            $table->unsignedBigInteger('classification_id')
+                  ->comment('(FK) Classification identifier');
+            $table->string('image')
+                  ->nullable()
+                  ->comment('URL or path of the photo of the res');
             $table->tinyInteger('status')
                   ->default(1)
                   ->comment('Status (1) Active, (0) Inactive');
@@ -34,27 +40,27 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')
                   ->nullable()
                   ->comment('(FK) User who updated the record');
-            $table->foreign('product_type_id', 'fk_sub_typ_product_type_id')
+            $table->foreign('breed_id', 'fk_cat_breed_id')
                   ->references('id')
-                  ->on('product_types')
+                  ->on('breeds')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->foreign('administration_route_id', 'fk_sub_typ_administration_route_id')
+            $table->foreign('classification_id', 'fk_cat_classification_id')
                   ->references('id')
-                  ->on('administration_routes')
+                  ->on('cattle_classifications')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->foreign('created_by', 'fk_sub_typ_created_by')
-                  ->references('id')
-                  ->on('users')
-                  ->onUpdate('cascade')
-                  ->onDelete('restrict');
-            $table->foreign('updated_by' , 'fk_sub_typ_updated_by')
+            $table->foreign('created_by', 'fk_cat_created_by')
                   ->references('id')
                   ->on('users')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->comment('Table that stores the catalog of substances that can be administered to cattle');
+            $table->foreign('updated_by', 'fk_cat_updated_by')
+                  ->references('id')
+                  ->on('users')
+                  ->onUpdate('cascade')
+                  ->onDelete('restrict');
+            $table->comment('Table that stores information about cattle');
         });
     }
 
@@ -63,6 +69,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('substance_types');
+        Schema::dropIfExists('cattle');
     }
 };

@@ -30,37 +30,17 @@ return new class extends Migration
                   ->nullable()
                   ->comment('(FK) User who last updated this record');
             $table->timestamps();
-            $table->foreign('created_by')
+            $table->foreign('created_by', 'fk_rol_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->foreign('updated_by')
+            $table->foreign('updated_by', 'fk_rol_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->comment('Table that stores the system roles');
-
-
-
-            $table->id()
-                  ->comment('(PK) Identificador único del rol');
-            $table->string('nombre')
-                  ->unique()
-                  ->comment('Nombre del rol (admin, veterinario, etc.)');
-            $table->text('descripcion')
-                  ->nullable()
-                  ->comment('Descripción del rol');
-            $table->tinyInteger('estado')
-                  ->default(1)
-                  ->comment('Estado del registro (1) Activo (0) Inactivo');
-            $table->unsignedBigInteger('usuario_creacion')
-                  ->comment('(FK) Usuario que creo el registro');
-            $table->timestamps();
-            $table->foreign('usuario_creacion', 'fk_rol_usuario_creacion')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('restrict');
-            $table->comment('Tabla que almacena los roles del sistema');
         });
     }
 

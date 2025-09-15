@@ -34,10 +34,12 @@ return new class extends Migration
             $table->foreign('created_by', 'fk_cat_cla_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('updated_by' , 'fk_cat_cla_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->comment('Table classifying cattle by growth stage and sex');
         });

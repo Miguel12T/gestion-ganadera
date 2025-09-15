@@ -14,17 +14,16 @@ return new class extends Migration
       // Tabla de usuarios
          Schema::create('users', function (Blueprint $table) {
             $table->id()
-                  ->comment('(PK) Identificador único del usuario');
+                  ->comment('(PK) Unique identifier for the user');
             $table->timestamp('email_verified_at')
                   ->nullable()
-                  ->comment('Fecha de verificación del correo');
+                  ->comment('Email verification date');
             $table->string('password')
-                  ->comment('Contraseña del usuario');
+                  ->comment('User password');
             $table->rememberToken()
-                  ->comment('Token de sesión para recordar');
-            $table->timestamps()
-                  ->comment('Fecha de cracion del registro');
-            $table->comment('Tabla que almacena las credenciales de acceso y su relación con la persona');
+                  ->comment('Session token for remember me');
+            $table->timestamps();
+            $table->comment('Stores access credentials and their relation to the person');
         });
       // Tabla para recuperación de contraseñas
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -33,36 +32,36 @@ return new class extends Migration
                   ->constrained('users')
                   ->name('pas_res_tok_user_id')
                   ->onDelete('cascade')
-                  ->comment('(FK) Usuario que solicita el cambio');
+                  ->comment('(FK) User requesting password reset');
             $table->string('token')
-                  ->comment('Token de recuperación');
+                  ->comment('Password reset token');
             $table->timestamp('created_at')
                   ->nullable()
-                  ->comment('Fecha de creación del token');
-            $table->comment('Tabla que almacena la informacion de restablecimiento de credenciales');
+                  ->comment('Token creation date');
+            $table->comment('Table that stores credential reset information');
         });
       // Tabla de sesiones
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')
                   ->primary()
-                  ->comment('(PK) Identificador de la sesión');
+                  ->comment('(PK) Session identifier');
             $table->foreignId('user_id')
                   ->nullable()
                   ->index()
                   ->name('ses_user_id')
-                  ->comment('(FK) Identificador del usuario al que pertenece la sesion');
+                  ->comment('(FK) Identifier of the user to whom the session belongs');
             $table->string('ip_address', 45)
                   ->nullable()
-                  ->comment('Dirección IP');
+                  ->comment('IP Address');
             $table->text('user_agent')
                   ->nullable()
-                  ->comment('Navegador/cliente');
+                  ->comment('Browser/Client');
             $table->longText('payload')
-                  ->comment('Datos de la sesión');
+                  ->comment('Session data');
             $table->integer('last_activity')
                   ->index()
-                  ->comment('Ultima actividad de la sesión');
-            $table->comment('Tabla que almacena la informacion de las sesiones de usuario');
+                  ->comment('Last session activity');
+            $table->comment('Table that stores user session information');
         });
     }
     /**

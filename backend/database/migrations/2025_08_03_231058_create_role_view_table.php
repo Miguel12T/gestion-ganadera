@@ -30,18 +30,22 @@ return new class extends Migration
             $table->foreign('role_id', 'fk_rol_vie_role_id')
                   ->references('id')
                   ->on('roles')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('view_id' , 'fk_rol_vie_view_id')
                   ->references('id')
                   ->on('views')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('created_by', 'fk_rol_vie_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('updated_by', 'fk_rol_vie_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->comment('Intermediate table defining which views each role can access');
         });

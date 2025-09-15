@@ -29,18 +29,22 @@ return new class extends Migration
           $table->foreign('farm_id', 'fk_farm_user_farm_id')
                 ->references('id')
                 ->on('farms')
+                ->onUpdate('cascade')
                 ->onDelete('restrict');
           $table->foreign('user_id', 'fk_farm_user_user_id')
                 ->references('id')
                 ->on('users')
+                ->onUpdate('cascade')
                 ->onDelete('restrict');
           $table->foreign('created_by', 'fk_farm_user_created_by')
                 ->references('id')
                 ->on('users')
+                ->onUpdate('cascade')
                 ->onDelete('restrict');
           $table->foreign('updated_by', 'fk_farm_user_updated_by')
                 ->references('id')
                 ->on('users')
+                ->onUpdate('cascade')
                 ->onDelete('restrict');
           $table->unique(['farm_id', 'user_id'], 'uk_farm_user');
           $table->comment('Table linking farms to their assigned users');

@@ -32,10 +32,12 @@ return new class extends Migration
             $table->foreign('created_by', 'fk_rep_met_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('updated_by' , 'fk_rep_met_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->comment('Table that stores the different methods of animal reproduction');
         });

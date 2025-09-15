@@ -42,14 +42,17 @@ return new class extends Migration
             $table->foreign('document_type_id', 'peo_document_type_id')
                   ->references('id')
                   ->on('document_types')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('created_by', 'peo_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('updated_by', 'peo_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->unique(['document_type_id', 'document_number'], 'uk_person_document'); // Clave única compuesta para tipo + número de documento
             $table->comment('Table storing general information of people');

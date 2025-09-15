@@ -11,50 +11,49 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('substance_types', function (Blueprint $table) {
+        Schema::create('birth_calves', function (Blueprint $table) {
             $table->id()
-                  ->comment('(PK) Substance identifier');
-            $table->string('name')
-                  ->unique()
-                  ->comment('Substance name');
-            $table->text('description')
+                  ->comment('(PK) Unique identifier of the calf record by birth');
+            $table->unsignedBigInteger('birth_id')
+                  ->comment('(FK) Birth identifier');
+            $table->unsignedBigInteger('calf_id')
+                  ->comment('(FK) Calf identifier');
+            $table->decimal('birth_weight', 5, 2)
                   ->nullable()
-                  ->comment('Substance description');
-            $table->unsignedBigInteger('product_type_id')
-                  ->comment('(FK) Product type');
-            $table->unsignedBigInteger('administration_route_id')
-                  ->nullable()
-                  ->comment('(FK) Administration route');
+                  ->comment('Calf weight at birth in kilograms');
             $table->tinyInteger('status')
                   ->default(1)
-                  ->comment('Status (1) Active, (0) Inactive');
+                  ->comment('Record status: (1) Active, (0) Inactive');
+            $table->text('observations')
+                  ->nullable()
+                  ->comment('Additional observations about the calf');
             $table->unsignedBigInteger('created_by')
                   ->nullable()
                   ->comment('(FK) User who created the record');
             $table->unsignedBigInteger('updated_by')
                   ->nullable()
                   ->comment('(FK) User who updated the record');
-            $table->foreign('product_type_id', 'fk_sub_typ_product_type_id')
+            $table->foreign('birth_id', 'fk_bir_cal_birth_id')
                   ->references('id')
-                  ->on('product_types')
+                  ->on('births')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->foreign('administration_route_id', 'fk_sub_typ_administration_route_id')
+            $table->foreign('calf_id', 'fk_bir_cal_calf_id')
                   ->references('id')
-                  ->on('administration_routes')
+                  ->on('cattle')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->foreign('created_by', 'fk_sub_typ_created_by')
-                  ->references('id')
-                  ->on('users')
-                  ->onUpdate('cascade')
-                  ->onDelete('restrict');
-            $table->foreign('updated_by' , 'fk_sub_typ_updated_by')
+            $table->foreign('created_by', 'fk_bir_cal_created_by')
                   ->references('id')
                   ->on('users')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->comment('Table that stores the catalog of substances that can be administered to cattle');
+            $table->foreign('updated_by', 'fk_bir_cal_updated_by')
+                  ->references('id')
+                  ->on('users')
+                  ->onUpdate('cascade')
+                  ->onDelete('restrict');
+            $table->comment('Table that stores the relationship between births and calves, allowing to manage multiple births and details of each calf');
         });
     }
 
@@ -63,6 +62,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('substance_types');
+        Schema::dropIfExists('birth_calves');
     }
 };

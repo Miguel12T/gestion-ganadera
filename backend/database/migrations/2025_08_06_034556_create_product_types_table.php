@@ -29,10 +29,12 @@ return new class extends Migration
             $table->foreign('created_by', 'fk_pro_typ_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('updated_by' , 'fk_pro_typ_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->comment('Table that stores the catalog of types of veterinary products');
         });

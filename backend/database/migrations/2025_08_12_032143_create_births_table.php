@@ -11,50 +11,51 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('substance_types', function (Blueprint $table) {
+        Schema::create('births', function (Blueprint $table) {
             $table->id()
-                  ->comment('(PK) Substance identifier');
-            $table->string('name')
-                  ->unique()
-                  ->comment('Substance name');
-            $table->text('description')
+                  ->comment('(PK) Unique identifier of the birth record');
+            $table->unsignedBigInteger('mother_id')
+                  ->comment('(FK) Identifier of the cow responsible for the birth');
+            $table->unsignedBigInteger('farm_id')
+                  ->comment('(FK) Identifier of the farm where the birth occurred');
+            $table->date('birth_date')
+                  ->comment('Date of the birth');
+            $table->time('birth_time')
                   ->nullable()
-                  ->comment('Substance description');
-            $table->unsignedBigInteger('product_type_id')
-                  ->comment('(FK) Product type');
-            $table->unsignedBigInteger('administration_route_id')
-                  ->nullable()
-                  ->comment('(FK) Administration route');
+                  ->comment('Time of the birth');
             $table->tinyInteger('status')
                   ->default(1)
-                  ->comment('Status (1) Active, (0) Inactive');
+                  ->comment('Record status: (1) Active, (0) Inactive');
+            $table->text('observations')
+                  ->nullable()
+                  ->comment('Additional observations about the birth');
             $table->unsignedBigInteger('created_by')
                   ->nullable()
                   ->comment('(FK) User who created the record');
             $table->unsignedBigInteger('updated_by')
                   ->nullable()
                   ->comment('(FK) User who updated the record');
-            $table->foreign('product_type_id', 'fk_sub_typ_product_type_id')
+            $table->foreign('mother_id', 'fk_bir_mother_id')
                   ->references('id')
-                  ->on('product_types')
+                  ->on('cattle')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->foreign('administration_route_id', 'fk_sub_typ_administration_route_id')
+            $table->foreign('farm_id', 'fk_bir_farm_id')
                   ->references('id')
-                  ->on('administration_routes')
+                  ->on('farms')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->foreign('created_by', 'fk_sub_typ_created_by')
-                  ->references('id')
-                  ->on('users')
-                  ->onUpdate('cascade')
-                  ->onDelete('restrict');
-            $table->foreign('updated_by' , 'fk_sub_typ_updated_by')
+            $table->foreign('created_by', 'fk_bir_created_by')
                   ->references('id')
                   ->on('users')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
-            $table->comment('Table that stores the catalog of substances that can be administered to cattle');
+            $table->foreign('updated_by', 'fk_bir_updated_by')
+                  ->references('id')
+                  ->on('users')
+                  ->onUpdate('cascade')
+                  ->onDelete('restrict');
+            $table->comment('Table that stores information about cattle births');
         });
     }
 
@@ -63,6 +64,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('substance_types');
+        Schema::dropIfExists('births');
     }
 };

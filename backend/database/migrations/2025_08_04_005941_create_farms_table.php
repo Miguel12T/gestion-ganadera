@@ -48,14 +48,17 @@ return new class extends Migration
             $table->foreign('owner_id', 'fk_far_owner_id')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('created_by', 'fk_far_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('updated_by', 'fk_far_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->comment('Table that stores information on registered livestock farms');
         });

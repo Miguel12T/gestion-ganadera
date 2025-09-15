@@ -16,6 +16,7 @@ return new class extends Migration
                   ->nullable()
                   ->after('id')
                   ->constrained('people')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict')
                   ->name('fk_use_person_id')
                   ->comment('(FK) Person assigned to user');
@@ -23,7 +24,8 @@ return new class extends Migration
                   ->nullable()
                   ->after('person_id')
                   ->constrained('roles')
-                  ->nullOnDelete()
+                  ->onUpdate('cascade')
+                  ->onDelete('restrict')
                   ->name('fk_use_role_id')
                   ->comment('(FK) Role assigned to the user');
             $table->tinyInteger('status')
@@ -41,10 +43,12 @@ return new class extends Migration
             $table->foreign('created_by', 'fk_use_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('updated_by', 'fk_use_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->index('person_id', 'idx_use_person_id');
             $table->index('role_id', 'idx_use_role_id');

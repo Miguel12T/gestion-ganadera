@@ -33,10 +33,12 @@ return new class extends Migration
             $table->foreign('created_by', 'fk_bre_created_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('updated_by', 'fk_bre_updated_by')
                   ->references('id')
                   ->on('users')
+                  ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->comment('Table that stores the types of cattle breeds');
         });

@@ -11,16 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
+      // Tabla de cache
         Schema::create('cache', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->mediumText('value');
-            $table->integer('expiration');
+            $table->string('key')
+                  ->primary()
+                  ->comment('Cache key');
+            $table->mediumText('value')
+                  ->comment('Cached value');
+            $table->integer('expiration')
+                  ->comment('Expiration time as a Unix timestamp');
+            $table->comment('Cache storage');
         });
-
+    // Tabla de locks para la cache
         Schema::create('cache_locks', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->string('owner');
-            $table->integer('expiration');
+            $table->string('key')
+                  ->primary()
+                  ->comment('Cache lock key');
+            $table->string('owner')
+                  ->comment('Lock owner identifier');
+            $table->integer('expiration')
+                  ->comment('Lock expiration time as a Unix timestamp');
+            $table->comment('Cache lock management');
         });
     }
 
