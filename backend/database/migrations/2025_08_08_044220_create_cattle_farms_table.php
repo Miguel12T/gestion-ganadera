@@ -52,7 +52,7 @@ return new class extends Migration
                   ->onDelete('restrict');
             $table->foreign('cattle_state_id', 'fk_cat_far_state_id')
                   ->references('id')
-                  ->on('cattle_states')
+                  ->on('cattle_statuses')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
             $table->foreign('created_by', 'fk_cat_far_created_by')
