@@ -48,7 +48,10 @@ return new class extends Migration
             $table->foreignId('user_id')
                   ->nullable()
                   ->index()
+                  ->constrained('users')
                   ->name('ses_user_id')
+                  ->onUpdate('cascade')
+                  ->onDelete('restrict')
                   ->comment('(FK) Identifier of the user to whom the session belongs');
             $table->string('ip_address', 45)
                   ->nullable()
